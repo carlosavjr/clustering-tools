@@ -33,8 +33,8 @@ echo "administrador"
 
 if ping -c 1 nodo$i > /dev/null
 then 
-  echo "Echo ssh-copy-id Nodo $i cpu:"
-  sshpass -p $(cat rootpwd.txt) ssh-copy-id -o StrictHostKeychecking=no  administrador@nodo$i
+  echo "ssh-copy-id Nodo $i cpu:"
+  sshpass -p $(cat pwd.txt) ssh-copy-id -o StrictHostKeychecking=no  administrador@nodo$i
   echo ''
 else
     # 100% failed

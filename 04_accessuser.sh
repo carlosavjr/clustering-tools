@@ -15,8 +15,6 @@ do
 
 echo "user$j"
 
-#sshpass -p "pwd@gtcmc$j" ssh user$j@cluster '
-
 sshpass -f pwd/pass_file$j ssh user$j@cluster '
 
 echo 'criar chave';
@@ -36,10 +34,9 @@ if ping -c 1 nodo$i > /dev/null;
 then 
   echo "Echo ssh-copy-id Nodo $i cpu:";
   echo 'user$n';
-  echo 'pwd@gtcmc$n';
   echo '$n';
 
-  sshpass -p "pwd@gtcmc$n" ssh-copy-id -o StrictHostKeychecking=no user$n@nodo$i;
+  sshpass -p pwd/pass_file$j ssh-copy-id -o StrictHostKeychecking=no user$n@nodo$i;
 
   echo '';
 else
