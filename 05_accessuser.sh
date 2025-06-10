@@ -43,10 +43,8 @@ if ping -c 1 nodo$i > /dev/null;
 then 
   echo "Echo ssh-copy-id Nodo $i cpu:";
   echo 'user$n';
-  echo 'pwd@gtcmc$n';
-  echo '$n';
-
-  sshpass -p "pwd@gtcmc$n" ssh-copy-id -o StrictHostKeychecking=no user$n@nodo$i;
+  
+  sshpass -p "XXXXXXXX" ssh-copy-id -o StrictHostKeychecking=no user$n@nodo$i;
 
   echo '';
 else
