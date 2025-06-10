@@ -10,12 +10,19 @@ echo 'Instalar sem senha:'
 echo ''
 echo ""
 
+if [[ -z "$1" || -z "$2" ]] ; then
+ echo 'uso: ./05_accessuser.sh 0X Y (X,Y intervalo de 02 até N inteiro de 2 dígitos)'
+ exit 1
+fi
+
+
+echo "Intervalo de instalação selecionado"
+echo $1 'até' $2
+
 for j in {01..30}
 do
 
 echo "user$j"
-
-#sshpass -p "pwd@gtcmc$j" ssh user$j@cluster '
 
 sshpass -f pwd/pass_file$j ssh user$j@cluster '
 
@@ -30,7 +37,7 @@ echo '$j'
 
 n='$j'
 
-for i in {17..17}
+for i in `eval echo {$1..$2}`
 do
 if ping -c 1 nodo$i > /dev/null;
 then 
