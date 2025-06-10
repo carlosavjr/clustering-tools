@@ -128,10 +128,20 @@ update_server_hosts() {
         fi
     done
 
-    echo -e "\nAppending remaining configuration from original /etc/hosts..."
+    echo -e "\nAppending remaining configuration from original /etc/hosts (excluding standard IPv6 blocks)..."
 
+    # Iterate through the original /etc/hosts content line by line.
+    # Exclude standard local/IPv6 entries and entries within the current range.
     while IFS= read -r line; do
-        if echo "$line" | grep -qE "^127\.0\.0\.1|^127\.0\.1\.1|^::1|^fe00::0|^ff00::0|^ff02::1|^ff02::2"; then
+        # --- FIX: Filter out ANY line that matches the IPv6 standard block's content ---
+        if echo "$line" | grep -qE "^# Standard IPv6 Configuration|^::1|^fe00::0|^ff00::0|^ff02::1|^ff02::2"; then
+            continue # Skip these lines from the original content
+        fi
+        # --- END FIX ---
+
+        # Skip lines that are standard localhost, cluster, or common IPv6 blocks,
+        # as these are handled separately by the script's fixed headers/footers.
+        if echo "$line" | grep -qE "^127\.0\.0\.1|^127\.0\.1\.1"; then # Only check for IPv4 localhost/cluster
             continue
         fi
 
@@ -139,7 +149,7 @@ update_server_hosts() {
         if echo "$line" | grep -qE "^${prefix}"; then
             extracted_ip=$(echo "$line" | awk '{print $1}')
         elif echo "$line" | grep -qE "^#${prefix}"; then
-            extracted_ip=$(echo "$line" | sed -E "s/^#(${prefix}[0-9\.]+).*$/\1/") # Adjusted regex for IP extraction
+            extracted_ip=$(echo "$line" | sed -E "s/^#(${prefix}[0-9\.]+).*$/\1/")
         fi
 
         if [[ -n "$extracted_ip" && ${current_range_ips["$extracted_ip"]+set} == "set" ]]; then
@@ -149,15 +159,16 @@ update_server_hosts() {
         echo "$line" >> "$tmp_hosts_file"
     done <<< "$original_hosts_content"
 
-    # Add standard IPv6 block cleanly and only once at the end of the file.
+    # Add the standard IPv6 block cleanly and only once at the very end of the file.
+    # This ensures it's present and not duplicated.
     cat <<EOF >> "$tmp_hosts_file"
 
 # Standard IPv6 Configuration
-::1\tip6-localhost ip6-loopback
-fe00::0 ip6-localnet
-ff00::0 ip6-mcastprefix
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
+::1        ip6-localhost ip6-loopback
+fe00::0    ip6-localnet
+ff00::0    ip6-mcastprefix
+ff02::1    ip6-allnodes
+ff02::2    ip6-allrouters
 EOF
 
     # Set correct permissions on the temporary file BEFORE moving it.
