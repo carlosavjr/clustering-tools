@@ -11,7 +11,7 @@ echo ''
 echo ""
 
  sn="02";
- en="14";
+ en="17";
 
  echo "Intervalo de instalação selecionado"
  echo $sn 'até' $en

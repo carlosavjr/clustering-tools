@@ -1,24 +1,24 @@
 #!/bin/bash
 echo ""
 echo "########################################"
-echo  "CHECAR SPECS NODOS "
+echo  "ACESSAR NODOS GTCMC "
 echo "########################################"
 
 
 echo ''
-echo 'Atualizando list_specs:'
+echo 'Teste ethernet nodos :'
 echo ''
 echo ""
 
-rm ~/list_specs
-
-for i in {15..17}
+for i in {03..17}
 do
 if ping -c 1 nodo$i > /dev/null
 then 
-  echo "Spec Nodo $i cpu:"
+  echo "Ping Nodo $i cpu:"
   echo ''
-   ssh nodo$i "slurmd -C >> list_specs"
+#  scp -r intel/ nodo$i:
+  ssh nodo$i "ping -c 1 www.google.com"
+
   echo ''
 else
     # 100% failed
@@ -27,5 +27,5 @@ echo ''
 fi
 done
 
-echo "Verificar arquivo list_specs" 
+echo "END CLUSTER INSTALL." 
 

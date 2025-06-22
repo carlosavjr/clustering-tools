@@ -29,7 +29,7 @@ fi
 
   ssh -t nodo$i "
 
-  if [ -d /opt/intel/oneapi/oneapi-base-toolkit ]
+  if [ -d /opt/intel/oneapi/oneapi-hpc-toolkit ]
   then
 
    echo "intel instalado"
@@ -52,7 +52,7 @@ fi
    echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
 #   echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
     sudo apt-get update -y
-    sudo apt-get install intel-oneapi-base-toolkit -y
+    sudo apt-get install intel-oneapi-hpc-toolkit -y
 
    else
 
