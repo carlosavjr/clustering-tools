@@ -23,7 +23,67 @@ Munge é um serviço de autenticação essencial para o Slurm. Este script se en
 Instalar Slurm-WLM (07_install_slurm-wlm.sh)
 Este script é o passo para transformar seus nós em parte de um cluster de computação de alto desempenho. Ele instala o Slurm Workload Manager (slurm-wlm), que é o sistema de gerenciamento de filas e recursos responsável por agendar e distribuir as tarefas de computação entre os nós.
 
-Instalar Pacotes Adicionais (c_install_packages_nodes.sh)
-Para garantir que seus nós tenham todas as ferramentas e bibliotecas necessárias para as cargas de trabalho do cluster, este script permite instalar pacotes de software adicionais em lote. Você pode especificar quais pacotes deseja instalar, e o script cuidará da distribuição e instalação em todos os nós selecionados.
+O script "Master Script de Gerenciamento de Cluster" organiza as tarefas de instalação e manutenção do cluster em diversas categorias. Abaixo está uma classificação detalhada e reordenada de cada uma das 23 operações:
+
+I. Configuração Inicial e Rede
+Estas operações focam na configuração básica da rede e na identificação de hosts, essenciais para a comunicação dentro do cluster.
+
+Descoberta de Hosts e NFS export (01_ip_range_host_discovery.sh): Identifica hosts na rede e configura exportações NFS.
+
+Configurar Acesso Admin (02_accessadmin.sh): Estabelece acesso administrativo sem senha via SSH para facilitar a gestão.
+
+Atualizar Hostnames (03_hostname_update.sh): Garante que os nomes dos hosts dos nós estejam corretos e atualizados.
+
+Atualizar Montagem NFS nos nodos (d_nfsreload.sh): Assegura que as montagens do sistema de arquivos de rede (NFS) nos nós clientes estejam operacionais e atualizadas.
+
+Mudar /etc/hosts no nodos (j_add_host_node_entry.sh): Modifica o arquivo /etc/hosts nos nós para garantir a resolução de nomes interna.
+
+Pingar Localmente Nós (ping_local.sh): Verifica a conectividade de rede local entre os nós.
+
+II. Gerenciamento de Acesso e Usuários
+Esta seção abrange a configuração de acesso SSH e a gestão de contas de usuários para administradores e usuários comuns.
+
+Adicionar Usuários em Lote (04_user_batch_nodes.sh): Permite a adição ou atualização de múltiplos usuários nos nós do cluster de forma automatizada.
+
+Configurar Acesso de Usuário (05_accessuser.sh): Configura o acesso SSH para usuários comuns.
+
+III. Instalação e Configuração do Slurm
+Este grupo de operações é dedicado à instalação e configuração do sistema de gerenciamento de carga de trabalho Slurm.
+
+Instalar Munge (06_install_munge.sh): Instala o serviço de autenticação Munge, uma dependência crucial do Slurm.
+
+Instalar Slurm-WLM (07_install_slurm-wlm.sh): Instala o Slurm Workload Manager nos nós.
+
+Recuperar informação de hardware dos nodos para uso no slurm.conf (g_slurmCspec.sh): Coleta dados de hardware necessários para otimizar a configuração do slurm.conf.
+
+Atualizar Configuração Slurm (08_updateslurmconf.sh): Atualiza os arquivos de configuração do Slurm.
+
+Verificar Status de Workers (workerstatus_batch.sh): Monitora o estado dos processos de worker do Slurm nos nós.
+
+Reiniciar nodo slurm travado (hung_proc.sh): Ferramenta para lidar com nós Slurm que estão em estado travado.
+
+Retomar Partição Slurm (resumepartition.sh): Altera o estado de uma partição Slurm para "RESUME", tornando-a ativa novamente.
+
+IV. Otimização, Hardware (Drivers/Sensores) e Ferramentas Gerais
+Estas operações são voltadas para a otimização do desempenho dos nós, incluindo drivers de hardware, ferramentas de monitoramento e utilitários gerais.
+
+Verificar Relógio dos Nós (a_checkclock.sh): Garante que os relógios de todos os nós estejam sincronizados, o que é crucial para o Slurm e outras operações de cluster.
+
+Desabilitar GUI (b_disablegui.sh): Desabilita a interface gráfica (GUI) para liberar recursos para tarefas computacionais.
+
+Instalar Pacotes Adicionais (c_install_packages_nodes.sh): Permite a instalação de pacotes de software adicionais que podem ser necessários nos nós.
+
+Varredura e instalação dos sensores de temperatura (e_installsensor.sh): Instala software para monitorar a temperatura dos componentes de hardware.
+
+Instalar NVIDIA CUDA (h_nvidia_cuda_install.sh): Instala o kit de ferramentas CUDA da NVIDIA para computação em GPU.
+
+Instalar Driver GPU NVIDIA (i_nvidia_gpu_driver.sh): Instala os drivers específicos para as GPUs NVIDIA.
+
+Pingar IP Externo (ping_external.sh): Testa a conectividade de rede externa (internet) a partir dos nós.
+
+V. Outros (Especial)
+Esta é uma opção de controle para o script mestre.
+
+Sair do script mestre: Encerra a execução do script principal.
 
 Espero que esta apresentação detalhada ajude você a entender melhor a função de cada componente para implementação e gerenciamento do seu cluster!
