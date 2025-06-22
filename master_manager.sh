@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# master_gtcmc_manager.sh
+# master_manager.sh
 # Script mestre abrangente para gerenciar as operações de configuração e manutenção dos nós do cluster GTCMC.
 # Este script orquestra a execução de vários sub-scripts para diferentes tarefas.
 #
