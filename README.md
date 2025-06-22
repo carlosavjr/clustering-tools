@@ -26,6 +26,7 @@ Este script é o passo para transformar seus nós em parte de um cluster de comp
 O script "Master Script de Gerenciamento de Cluster" organiza as tarefas de instalação e manutenção do cluster em diversas categorias. Abaixo está uma classificação detalhada e reordenada de cada uma das 23 operações:
 
 I. Configuração Inicial e Rede
+
 Estas operações focam na configuração básica da rede e na identificação de hosts, essenciais para a comunicação dentro do cluster.
 
 Descoberta de Hosts e NFS export (01_ip_range_host_discovery.sh): Identifica hosts na rede e configura exportações NFS.
@@ -41,6 +42,7 @@ Mudar /etc/hosts no nodos (j_add_host_node_entry.sh): Modifica o arquivo /etc/ho
 Pingar Localmente Nós (ping_local.sh): Verifica a conectividade de rede local entre os nós.
 
 II. Gerenciamento de Acesso e Usuários
+
 Esta seção abrange a configuração de acesso SSH e a gestão de contas de usuários para administradores e usuários comuns.
 
 Adicionar Usuários em Lote (04_user_batch_nodes.sh): Permite a adição ou atualização de múltiplos usuários nos nós do cluster de forma automatizada.
@@ -48,6 +50,7 @@ Adicionar Usuários em Lote (04_user_batch_nodes.sh): Permite a adição ou atua
 Configurar Acesso de Usuário (05_accessuser.sh): Configura o acesso SSH para usuários comuns.
 
 III. Instalação e Configuração do Slurm
+
 Este grupo de operações é dedicado à instalação e configuração do sistema de gerenciamento de carga de trabalho Slurm.
 
 Instalar Munge (06_install_munge.sh): Instala o serviço de autenticação Munge, uma dependência crucial do Slurm.
@@ -65,6 +68,7 @@ Reiniciar nodo slurm travado (hung_proc.sh): Ferramenta para lidar com nós Slur
 Retomar Partição Slurm (resumepartition.sh): Altera o estado de uma partição Slurm para "RESUME", tornando-a ativa novamente.
 
 IV. Otimização, Hardware (Drivers/Sensores) e Ferramentas Gerais
+
 Estas operações são voltadas para a otimização do desempenho dos nós, incluindo drivers de hardware, ferramentas de monitoramento e utilitários gerais.
 
 Verificar Relógio dos Nós (a_checkclock.sh): Garante que os relógios de todos os nós estejam sincronizados, o que é crucial para o Slurm e outras operações de cluster.
