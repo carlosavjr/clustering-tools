@@ -25,6 +25,40 @@ fi
  echo ''
  echo ""
 
+
+
+echo "instalando Munge no servidor"
+
+ if [ -f /usr/sbin/create-munge-key ]
+ then
+
+   echo "Munge obtido no controlador";
+
+ else
+
+    sudo apt update;
+    sudo apt install munge libmunge2 libmunge-dev;
+
+    munge -n | unmunge | grep STATUS;
+
+    ~/admin_mode.sh;
+
+    cd slurm/; 
+
+    sudo ./permissions;
+
+#    sudo /usr/sbin/create-munge-key;
+ 
+    sudo systemctl enable munge
+
+    sudo systemctl restart munge
+
+    cp /etc/munge/munge.key ~/slurm/;
+
+    cd ../
+
+ fi
+
 for i in `eval echo {$1..$2}`
 do
 if ping -c 1 nodo$i > /dev/null

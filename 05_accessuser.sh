@@ -55,7 +55,7 @@ do
     # We need to ensure SSHPASS is set *within* that remote shell for ssh-copy-id.
     # The trick is to inject the $current_password variable (local) into the remote string,
     # by carefully breaking out of single quotes, inserting the variable, then re-entering single quotes.
-    sshpass -e ssh user"$user_num"@cluster '
+    sshpass -e ssh -t user"$user_num"@cluster '
         # Set SSHPASS variable on the remote host for the nested sshpass calls.
         # This is where the magic happens: the value of $current_password (from the local script)
         # is injected into this string executed on the remote 'cluster' machine.
@@ -81,6 +81,12 @@ do
                 echo "Echo ssh-copy-id Nodo $i cpu:";
                 echo "user$n";
                 echo "$i";
+
+                IP_OCTET=$((10#$i))
+                IP_ADDRESS="10.1.1.$IP_OCTET"
+
+                ssh-keygen -R "nodo$i"
+                ssh-keygen -R "$IP_ADDRESS"
 
                 # This sshpass -e will now successfully find the SSHPASS variable set above
                 sshpass -e ssh-copy-id -o StrictHostKeychecking=no user$n@nodo$i;

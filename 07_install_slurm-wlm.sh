@@ -26,6 +26,11 @@ fi
  echo ''
  echo ""
 
+echo "instalandos slurm no servidor"
+
+sudo apt update -y;
+sudo apt install slurm-wlm -y;
+
 for i in `eval echo {$1..$2}`
 do
 if ping -c 1 nodo$i > /dev/null

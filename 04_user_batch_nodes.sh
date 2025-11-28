@@ -26,6 +26,10 @@ if [ ! -f "new_users.txt" ]; then
   exit 1
 fi
 
+echo "reconfigurando senhas do servidor";
+
+sudo newusers new_users.txt;
+sudo chpasswd < newpass.txt;
 
  
 for i in `eval echo {$1..$2}`

@@ -10,11 +10,26 @@ echo 'Atualizar SLURM config <CONTROLLER>:'
 echo ''
 echo ""
 
- sn="02";
- en="17";
+
+if [[ -z "$1" || -z "$2" ]] ; then
+ echo 'uso: ./08_updateslurmconf.sh 0X Y (X,Y intervalo de 02 até N inteiro de 2 dígitos)'
+ exit 1
+fi
+
 
  echo "Intervalo de instalação selecionado"
- echo $sn 'até' $en
+ echo $1 'até' $2
+
+ echo ''
+ echo 'update slurm.conf :'
+ echo ''
+ echo ""
+
+ #sn="02";
+ #en="17";
+
+ echo "Intervalo de instalação selecionado"
+ echo $1 'até' $2
 
 # exit 1;
 
@@ -30,7 +45,9 @@ sudo cp slurm.conf /etc/slurm-llnl/
  echo ''
  echo ""
 
-for i in `eval echo {$sn..$en}`
+for i in `eval echo {$1..$2}`
+#for i in `eval echo {$sn..$en}`
+
 do
 if ping -c 1 nodo$i > /dev/null
 then 

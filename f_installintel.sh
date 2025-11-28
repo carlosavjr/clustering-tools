@@ -20,6 +20,31 @@ fi
  echo ''
  echo ""
 
+
+  if [ -d /opt/intel/oneapi/oneapi-hpc-toolkit ]
+  then
+
+        echo "intel instalado no servidor"
+
+  else
+
+    sudo apt update;
+    sudo apt install -y gpg-agent wget;
+
+   # download the key to system keyring
+   wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null;
+#   wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
+
+   # add signed entry to apt sources and configure the APT client to use Intel repository:
+   echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list;
+#   echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
+    sudo apt-get update -y;
+    sudo apt-get install intel-oneapi-hpc-toolkit -y;
+
+  fi
+
+
+
  for i in `eval echo {$1..$2}`
  do
   if ping -c 1 nodo$i > /dev/null
@@ -29,52 +54,43 @@ fi
 
   ssh -t nodo$i "
 
-  if [ -d /opt/intel/oneapi/oneapi-hpc-toolkit ]
+ if [ -d /opt/intel/oneapi/oneapi-hpc-toolkit ]
   then
 
-   echo "intel instalado"
+    echo "intel instalado"
 
   else
 
    if ping -c 1 www.google.com > /dev/null
    then
     ./admin_mode.sh
-    echo "atualizando apt"
+    echo 'atualizando apt'
 
-    sudo apt update
-    sudo apt install -y gpg-agent wget
+    sudo apt update;
+    sudo apt install -y gpg-agent wget;
 
    # download the key to system keyring
    wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
-#   wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
 
    # add signed entry to apt sources and configure the APT client to use Intel repository:
    echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
-#   echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
-    sudo apt-get update -y
-    sudo apt-get install intel-oneapi-hpc-toolkit -y
+    sudo apt-get update -y;
+    sudo apt-get install intel-oneapi-hpc-toolkit -y;
 
    else
 
-     cd ~/intel/ ;
-
-    ./admin_mode.sh;
-    sudo dpkg -i *.deb
+     echo 'sem internet no nodo';
 
    fi
-
-  fi
-
+ fi
 "
 
   echo ''
  else
     # 100% failed
- echo "Host : nodo$i is down at $(date)"
- echo ''
+  echo "Host : nodo$i is down at $(date)"
+  echo ''
  fi
 done
 
-
-echo "END CLUSTER INSTALL." 
-
+echo "END CLUSTER INSTALL."
